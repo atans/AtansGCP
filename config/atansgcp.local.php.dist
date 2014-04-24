@@ -1,0 +1,18 @@
+<?php
+
+return array(
+    'atansgcp' => array(
+        /**
+         * Google cloud print email
+         */
+        'gcp_email'       => '',
+        /**
+         * Google cloud print password
+         */
+        'gcp_password'    => '',
+        /**
+         * Google cloud print client name
+         */
+        'gcp_client_name' => 'AtansGCP_Client',
+    ),
+);
