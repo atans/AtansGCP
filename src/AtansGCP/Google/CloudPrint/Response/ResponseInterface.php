@@ -19,6 +19,21 @@ interface ResponseInterface
     public function setSuccess($success);
 
     /**
+     * Get message
+     *
+     * @return string
+     */
+    public function getMessage();
+
+    /**
+     * Set message
+     *
+     * @param  string $message
+     * @return AbstractResponse
+     */
+    public function setMessage($message);
+
+    /**
      * Set request
      *
      * @param  array $request
