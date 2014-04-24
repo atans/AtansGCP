@@ -1,7 +1,6 @@
 AtansGCP
 ========
-
-Google Cloud Print module for Zend Framework 2
+Google Cloud Print module for Zend Framework 2 (Beta Version)
 
 Installation
 ============
@@ -36,7 +35,10 @@ return array(
 
 2. Copy `./vendor/atans/atans-gcp/config/attansgcp.global.php.dist` to `./config/autoload/attansgcp.global.php`
 
-3. Edit `./config/autoload/attansgcp.global.php`
+3. Add printers to your email account via `Google Chrome` or `https://www.google.com/cloudprint/learn/`
+
+
+4. Edit `./config/autoload/attansgcp.global.php`
 ```
     'gcp_email'       => 'your.email@gmail.com',
     'gcp_password'    => 'your.email.password',
