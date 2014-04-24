@@ -46,7 +46,10 @@ Use it
 ======
 
 ### Get printers
+
 ```php
+class IndexController extends AbstractActionController
+{
     public function indexAction()
     {
         $cloudPrint = $this->getServiceLocator()->get('AtansGCP\Google\CloudPrint\CloudPrint');
@@ -55,12 +58,15 @@ Use it
         var_dump($printers);
     }
 
+    //...
 ```
 
 
 ### Submit job
 
 ```php
+class IndexController extends AbstractActionController
+{
     public function indexAction()
     {
         $file = 'example.pdf';
@@ -70,10 +76,11 @@ Use it
 
         $cloudPrintService = $this->getServiceLocator()->get('AtansGCP\Google\CloudPrint\CloudPrint');
 
+        // Your printer id
         $printerId = 'fb3a765e-50ad-94b0-6101-example';
 
         // Set page size as A4
-        $mediaSizeTicket = new MediaSizeTicketItem();
+        $mediaSizeTicket = new \AtansGCP\Google\CloudPrint\Ticket\Item\MediaSizeTicketItem();
         $mediaSizeTicket->setVendorId('psk:ISOA4')
                         ->setWidthMicrons(210000)
                         ->setHeightMicrons(297000);
@@ -81,7 +88,7 @@ Use it
         $printTicket = new \AtansGCP\Google\CloudPrint\Ticket\Section\PrintTicketSection();
         $printTicket->setMediaSize($mediaSizeTicket);
 
-        $ticket = new Ticket();
+        $ticket = new \AtansGCP\Google\CloudPrint\Model\Ticket();
         $ticket->setPrint($printTicket);
 
         $submit = new \AtansGCP\Google\CloudPrint\Model\Submit();
@@ -99,4 +106,6 @@ Use it
        var_dump($response->getSuccess());
        var_dump($response->getJob());
     }
+
+    //...
 ```
