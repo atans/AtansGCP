@@ -5,6 +5,7 @@ class PageOrientationTicketItem
 {
     const TYPE_PORTRAIT  = 0;
     const TYPE_LANDSCAPE = 1;
+
     /**
      * @var int
      */

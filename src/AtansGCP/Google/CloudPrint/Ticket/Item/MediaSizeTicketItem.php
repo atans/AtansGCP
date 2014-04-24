@@ -6,12 +6,12 @@ class MediaSizeTicketItem
     /**
      * @var int
      */
-    public $width_microns = 1;
+    public $width_microns;
 
     /**
      * @var int
      */
-    public $height_microns = 2;
+    public $height_microns;
 
     /**
      * @var boolean

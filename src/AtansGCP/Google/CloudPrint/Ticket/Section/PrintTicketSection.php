@@ -5,8 +5,6 @@ use AtansGCP\Google\CloudPrint\Ticket\Item;
 
 class PrintTicketSection
 {
-    const CONTENT_TYPE_PDF = 'application/pdf';
-
     /**
      * @var Item\VendorTicketItem[]
      */

@@ -1,7 +1,6 @@
 <?php
 namespace AtansGCP\Google\CloudPrint\Ticket\Item;
 
-
 class ReverseOrderTicketItem
 {
     /**
