@@ -4,6 +4,7 @@ namespace AtansGCP\Google\CloudPrint;
 use AtansGCP\Exception;
 use AtansGCP\Google\CloudPrint\Model\Submit;
 use AtansGCP\Google\CloudPrint\Response;
+use Google_Client;
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Json\Json;
@@ -11,20 +12,13 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 
 class CloudPrint
 {
-    const CLIENTLOGIN_URI = 'https://www.google.com/accounts/ClientLogin';
-    const ACCOUNT_TYPE    = 'HOSTED_OR_GOOGLE';
     const SERVICE_NAME    = 'cloudprint';
     const CLOUDPRINT_URL  = 'https://www.google.com/cloudprint/';
 
     /**
-     * @var string
+     * @var Google_Client
      */
-    protected $email;
-
-    /**
-     * @var string
-     */
-    protected $password;
+    protected $client;
 
     /**
      * @var string
@@ -43,25 +37,17 @@ class CloudPrint
 
     /**
      * Initialization
-
      *
-*@param string|null $email
-     * @param string|null $password
+     * @param Google_Client $client
      * @param string|null $clientName
      * @return CloudPrint
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct($email, $password , $clientName = 'AtansGCP_Client')
+    public function __construct(Google_Client $client, $clientName = 'AtansGCP_Client')
     {
-        $this->email       = $email;
-        $this->password    = $password;
+        $this->client = $client;
         $this->clientName  = $clientName;
-        $this->authTokens  = null;
         $this->initialized = true;
-
-        if (empty($this->email) || empty($this->password)) {
-            throw new Exception\InvalidArgumentException('email and password are required');
-        }
 
         return $this;
     }
@@ -242,13 +228,13 @@ class CloudPrint
      */
     public function sendApiRequest($resource, $method = Request::METHOD_POST, Response\ResponseInterface $response = null, $data = null)
     {
-        $tokens = $this->getAuthTokens();
+        //$tokens = $this->getAuthTokens();
+
+        $accessToken = json_decode($this->client->getAccessToken(), true);
 
         $request = new Request();
         $request->getHeaders()
-                ->addHeaderLine('Authorization', 'GoogleLogin auth=' . $tokens['Auth'])
-                ->addHeaderLine('GData-Version', '3.0')
-                ->addHeaderLine('X-CloudPrint-Proxy','Mimeo');
+                ->addHeaderLine('Authorization', 'Bearer ' . $accessToken['access_token']);
         $request->setUri(static::CLOUDPRINT_URL . $resource)
                 ->setMethod($method);
 
@@ -277,70 +263,5 @@ class CloudPrint
         }
 
         return $data;
-    }
-
-    /**
-     * Get auth tokens
-     *
-     * @return string
-     * @throws \Zend\Http\Client\Exception\RuntimeException
-     * @throws \AtansGCP\Exception\DomainException
-     * @throws \AtansGCP\Exception\RuntimeException
-     * @throws \Zend\Http\Exception\InvalidArgumentException
-     * @throws \Zend\Http\Exception\RuntimeException
-     */
-    public function getAuthTokens()
-    {
-        if (! $this->initialized) {
-            throw new Exception\DomainException(sprintf(
-                '%s cannot get tokens as initialization has not yet occurred',
-                __METHOD__
-            ));
-        }
-
-        if (is_null($this->authTokens)) {
-            $request = new Request();
-            $request->setUri(static::CLIENTLOGIN_URI);
-            $request->getHeaders()->addHeaderLine('content-type', 'application/x-www-form-urlencoded');
-            $request->setMethod(Request::METHOD_POST)
-                    ->getPost()
-                    ->set('accountType', static::ACCOUNT_TYPE)
-                    ->set('service', static::SERVICE_NAME)
-                    ->set('Email', $this->email)
-                    ->set('Passwd', $this->password)
-                    ->set('source', $this->clientName);
-
-            $client = new Client();
-            $client->setOptions(array(
-                'sslcafile' => __DIR__ . '/../../../../data/cacert.pem',
-            ));
-            $client->setAdapter(new Client\Adapter\Socket());
-            $response = $client->send($request);
-
-            $body = $response->getBody();
-            if (preg_match('/Auth=(.*)/i', $body, $matches)) {
-                $tokens = array();
-                $lines = explode("\n", $body);
-                foreach ($lines as $line) {
-                    $line = trim($line);
-                    if ($line) {
-                        list($key, $value) = explode('=', $line);
-                        $key = trim($key);
-                        $value = trim($value);
-                        if (strlen($key) && strlen($value)) {
-                            $tokens[$key] = $value;
-                        }
-                    }
-                }
-                $this->authTokens = $tokens;
-            } else {
-                throw new Exception\RuntimeException(sprintf(
-                    '%s can not get the auth tokens',
-                    __METHOD__
-                ));
-            }
-        }
-
-        return $this->authTokens;
     }
 }

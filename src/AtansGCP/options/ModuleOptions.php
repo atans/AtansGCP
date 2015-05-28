@@ -3,88 +3,167 @@ namespace AtansGCP\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
-class ModuleOptions extends AbstractOptions implements
-    GCPInterface
+class ModuleOptions extends AbstractOptions implements ClientInterface
 {
     /**
      * @var string
      */
-    protected $gcpEmail = null;
+    protected $client_id;
 
     /**
      * @var string
      */
-    protected $gcpPassword = null;
+    protected $client_secret;
 
     /**
      * @var string
      */
-    protected $gcpClientName = 'AtansGCP_Client';
+    protected $redirect_uri;
 
     /**
-     * Get gcpEmail
-     *
-     * @return string
+     * @var string
      */
-    public function getGcpEmail()
-    {
-        return $this->gcpEmail;
-    }
+    protected $scope = 'https://www.googleapis.com/auth/cloudprint';
 
     /**
-     * Set gcpEmail
+     * @var string
+     */
+    protected $accessTokenUri = '';
+
+    /**
+     * @var string
+     */
+    protected $accessTokenFile = './data/google-cloud-print-access-token.json';
+
+    /**
+     * Set client_id
      *
-     * @param  string $gcpEmail
+     * @param  string $client_id
      * @return ModuleOptions
      */
-    public function setGcpEmail($gcpEmail)
+    public function setClientId($client_id)
     {
-        $this->gcpEmail = $gcpEmail;
-
+        $this->client_id = $client_id;
         return $this;
     }
 
     /**
-     * Get gcpPassword
+     * Get client_id
      *
      * @return string
      */
-    public function getGcpPassword()
+    public function getClientId()
     {
-        return $this->gcpPassword;
+        return $this->client_id;
     }
 
     /**
-     * Set gcpPassword
+     * Set client_secret
      *
-     * @param  null $gcpPassword
+     * @param  string $client_secret
      * @return ModuleOptions
      */
-    public function setGcpPassword($gcpPassword)
+    public function setClientSecret($client_secret)
     {
-        $this->gcpPassword = $gcpPassword;
+        $this->client_secret = $client_secret;
         return $this;
     }
 
     /**
-     * Get gcpClientName
+     * Get client_secret
      *
      * @return string
      */
-    public function getGcpClientName()
+    public function getClientSecret()
     {
-        return $this->gcpClientName;
+        return $this->client_secret;
     }
 
     /**
-     * Set gcpClientName
+     * Set redirect_uri
      *
-     * @param  string $gcpClientName
+     * @param  string $redirect_uri
      * @return ModuleOptions
      */
-    public function setGcpClientName($gcpClientName)
+    public function setRedirectUri($redirect_uri)
     {
-        $this->gcpClientName = $gcpClientName;
+        $this->redirect_uri = $redirect_uri;
+        return $this;
+    }
+
+    /**
+     * Get redirect_uri
+     *
+     * @return string
+     */
+    public function getRedirectUri()
+    {
+        return $this->redirect_uri;
+    }
+
+    /**
+     * Set scope
+     *
+     * @param  string $scope
+     * @return ModuleOptions
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * Get scope
+     *
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * Set accessTokenUri
+     *
+     * @param  string $accessTokenUri
+     * @return ModuleOptions
+     */
+    public function setAccessTokenUri($accessTokenUri)
+    {
+        $this->accessTokenUri = $accessTokenUri;
+        return $this;
+    }
+
+    /**
+     * Get accessTokenUri
+     *
+     * @return string
+     */
+    public function getAccessTokenUri()
+    {
+        return $this->accessTokenUri;
+    }
+
+    /**
+     * Get accessTokenFile
+     *
+     * @return string
+     */
+    public function getAccessTokenFile()
+    {
+        return $this->accessTokenFile;
+    }
+
+    /**
+     * Set accessTokenFile
+     *
+     * @param  string $accessTokenFile
+     * @return ModuleOptions
+     */
+    public function setAccessTokenFile($accessTokenFile)
+    {
+        $this->accessTokenFile = $accessTokenFile;
         return $this;
     }
 }

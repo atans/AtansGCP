@@ -3,16 +3,24 @@
 return array(
     'atansgcp' => array(
         /**
-         * Google cloud print email
+         * Google Client id
          */
-        'gcp_email'       => '',
+        'client_id'       => '',
         /**
-         * Google cloud print password
+         * Google client secret
          */
-        'gcp_password'    => '',
+        'client_secret'    => '',
         /**
-         * Google cloud print client name
+         * redirect uri
          */
-        'gcp_client_name' => 'AtansGCP_Client',
+        'redirect_uri' => '',
+        /**
+         * Google cloud print scope
+         */
+        'scope' => 'https://www.googleapis.com/auth/cloudprint',
+        /**
+         * Access token uri
+         */
+        'access_token_uri' => '',
     ),
 );
